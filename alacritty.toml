@@ -1,0 +1,18 @@
+import = [
+    "~/.config/alacritty/themes/themes/{theme}.toml"
+]
+
+[window]
+
+opacity = 0.9
+
+dimensions = { columns = 120, lines = 30}
+
+padding = { x = 20, y = 10}
+
+
+[cursor]
+
+style = { shape = "Block", blinking = "On"}
+
+# style.blinking = "On"
