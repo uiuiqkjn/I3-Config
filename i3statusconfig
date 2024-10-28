@@ -1,0 +1,114 @@
+###############################################################################
+# ceerious i3 status config
+# see "man i3status" for documentation.
+#
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+###############################################################################
+
+general {
+    interval         = 1                     # 更新状态的时间间隔（秒）
+    colors           = true                  # 启用颜色
+    color_good      = '#88b090'             # 良好状态的颜色
+    color_degraded  = '#ccdc90'             # 降级状态的颜色
+    color_bad       = '#e89393'             # 不良状态的颜色
+}
+
+# 定义显示的顺序
+order += "volume master"                   # 音量信息
+order += "disk /"                          # 根目录磁盘使用情况
+order += "disk /home"                      # /home 目录磁盘使用情况
+# order += "run_watch DHCP"                # （可选）监控 DHCP 客户端状态
+# order += "ipv6"                          # 显示 IPv6 地址
+# order += "run_watch VPN"                 # （可选）监控 VPN 客户端状态
+order += "wireless wlp0s20f3"              # 无线网络状态（更新为正确的接口）
+# order += "ethernet enp0s20f0u1u2"        # 有线网络状态（更新为正确的接口）
+order += "battery 0"                     # 电池状态
+order += "cpu_temperature 0"               # CPU 温度
+order += "cpu_usage 0"                     # CPU 使用率
+order += "load"                            # 系统负载
+order += "tztime local"                    # 本地时间
+
+# 无线网络接口配置
+wireless wlp0s20f3 {
+    format_up = "%quality 🌐 %essid %ip"   # 显示连接状态、SSID 和 IP 地址
+    format_down = ""                       # 无信号时不显示内容
+}
+
+# 有线网络接口配置
+ethernet enp0s20f0u1u2 {
+    format_up = "%ip 📡 (%speed)"          # 显示 IP 地址和连接速度
+    format_down = ""                       # 无连接时不显示内容
+}
+
+# 电池状态配置
+battery 0 {
+    format = "%status %percentage %remaining"  # 显示电池状态、百分比和剩余时间
+    format_down = "🔋 0%"                       # 设备未连接时的显示格式
+    last_full_capacity = true                    # 显示最后充满电的容量
+    integer_battery_capacity = true              # 将电池容量显示为整数
+    low_threshold = 20                           # 低电量阈值（百分比）
+    threshold_type = percentage                  # 阈值类型为百分比
+    hide_seconds = true                          # 隐藏剩余时间的秒数
+    status_chr = "🔌 "                           # 充电状态图标
+    status_bat = "🔋 "                           # 电池状态图标
+    status_unk = "❓ "                           # 未知状态图标
+    status_full = "✔️ "                         # 满电状态图标
+}
+
+# DHCP 监控配置（可选）
+run_watch DHCP {
+    pidfile = "/var/run/dhclient*.pid"      # DHCP 客户端的 PID 文件路径
+}
+
+# VPN 监控配置（可选）
+run_watch VPN {
+    pidfile = "/var/run/vpnc/pid"            # VPN 客户端的 PID 文件路径
+}
+
+# 本地时间配置
+tztime local {
+    format = "🕒 %Y-%m-%d %H:%M:%S"          # 显示本地时间和日期
+}
+
+# 系统负载配置
+load {
+    format = "🔄 %1min"                      # 显示最近 1 分钟的平均负载
+}
+
+# CPU 使用率配置
+cpu_usage {
+    format = "🖥️ %usage"                     # 显示 CPU 使用率
+}
+
+# CPU 温度配置
+cpu_temperature 0 {
+    format = "🌡️ %degrees°C"                # 显示 CPU 温度
+}
+
+# 磁盘使用情况配置
+disk "/" {
+    format = "💾 %avail"                     # 显示可用空间
+    prefix_type = custom                     # 使用自定义前缀类型
+    low_threshold = 20                       # 低空间阈值（百分比）
+    threshold_type = percentage_avail        # 阈值类型为可用百分比
+}
+
+# 磁盘使用情况配置（/home）
+disk "/home" {
+    format = "💾 %avail"                     # 显示 /home 目录的可用空间
+    prefix_type = custom                     # 使用自定义前缀类型
+    low_threshold = 20                       # 低空间阈值（百分比）
+    threshold_type = percentage_avail        # 阈值类型为可用百分比
+}
+
+# 音量控制配置
+volume master {
+    format = "%volume 🔊 "                   # 显示音量百分比
+    format_muted = "🔇 "                     # 静音时的显示格式
+    device = "default"                       # 默认音频设备
+    mixer = "Master"                         # 音量控制器
+    mixer_idx = 0                            # 音量控制器索引
+}
